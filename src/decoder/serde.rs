@@ -1,5 +1,6 @@
 use std::vec;
 
+use chrono::{DateTime, UTC};
 use serde::de::{self, Deserialize, Deserializer, Visitor, EnumVisitor, MapVisitor, SeqVisitor,
                 VariantVisitor};
 
@@ -222,6 +223,7 @@ impl Deserializer for Decoder {
             Bson::Null => visitor.visit_unit(),
             Bson::I32(v) => visitor.visit_i32(v),
             Bson::I64(v) => visitor.visit_i64(v),
+            Bson::UtcDatetime(datetime) => visitor.visit_string(datetime.to_rfc3339()),
             _ => {
                 let doc = value.to_extended_document();
                 let len = doc.len();

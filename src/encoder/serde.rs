@@ -1,5 +1,6 @@
 use serde::ser::{Serialize, Serializer};
 
+use chrono::{DateTime, UTC};
 use bson::{Array, Bson, Document};
 use oid::ObjectId;
 
@@ -176,7 +177,10 @@ impl Serializer for Encoder {
 
     #[inline]
     fn serialize_str(&mut self, value: &str) -> EncoderResult<()> {
-        self.value = Bson::String(value.to_string());
+        self.value = match value.parse::<DateTime<UTC>>() {
+            Ok(date) => Bson::UtcDatetime(date),
+            _ => Bson::String(value.to_string()),
+        };
         Ok(())
     }
 
@@ -328,7 +332,8 @@ impl Serializer for Encoder {
     fn serialize_tuple_variant_end(&mut self, state: TupleVariantState) -> EncoderResult<()> {
         let mut tuple_variant = Document::new();
         if state.array.len() == 1 {
-            tuple_variant.insert(state.name.to_string(), state.array.into_iter().next().unwrap());
+            tuple_variant.insert(state.name.to_string(),
+                                 state.array.into_iter().next().unwrap());
         } else {
             tuple_variant.insert(state.name.to_string(), Bson::Array(state.array));
         }

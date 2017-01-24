@@ -1,9 +1,5 @@
 # bson-rs
 
-[![Build Status](https://img.shields.io/travis/zonyitoo/bson-rs.svg)](https://travis-ci.org/zonyitoo/bson-rs)
-[![crates.io](https://img.shields.io/crates/v/bson.svg)](https://crates.io/crates/bson)
-[![crates.io](https://img.shields.io/crates/l/bson.svg)](https://crates.io/crates/bson)
-
 Encoding and decoding support for BSON in Rust
 
 ## Useful links
@@ -29,7 +25,7 @@ Prepare your struct for Serde serialization:
 ```rust
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Person {
-    #[serde(rename = "_id")]  // Use MongoDB's special primary key field name when serializing 
+    #[serde(rename = "_id")]  // Use MongoDB's special primary key field name when serializing
     pub id: String,
     pub name: String,
     pub age: u32

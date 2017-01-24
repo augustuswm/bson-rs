@@ -1,3 +1,5 @@
+use chrono::{DateTime, UTC};
+
 use bson::{Bson, to_bson, from_bson};
 use bson::oid::ObjectId;
 use std::collections::BTreeMap;
@@ -10,6 +12,18 @@ fn floating_point() {
 
     let deser: Bson = to_bson(&f).unwrap();
     assert_eq!(obj, deser);
+}
+
+#[test]
+fn datetime() {
+    let date = "2015-02-05T08:59:33Z";
+    let datetime = date.parse::<DateTime<UTC>>().unwrap();
+    let obj = Bson::UtcDatetime(datetime.clone());
+    let d: DateTime<UTC> = from_bson(obj.clone()).unwrap();
+    assert_eq!(d, datetime);
+
+    let deser: Bson = to_bson(&date.to_string()).unwrap();
+    assert_eq!(obj, deser)
 }
 
 #[test]

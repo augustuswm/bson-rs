@@ -12,7 +12,7 @@ name = "bson"
 
 [dependencies]
 byteorder = "0.3"
-chrono = "0.2"
+chrono = { version = "0.2", features = ["serde"] }
 libc = "0.1"
 rand = "0.3"
 rust-crypto = "0.2.31"
